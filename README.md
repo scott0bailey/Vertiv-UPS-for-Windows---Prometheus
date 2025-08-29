@@ -5,7 +5,7 @@ https://www.vertiv.com/en-us/support/software-download/software/vertiv-power-ass
 
 Once installed verify the metrics are displayed:
 
-https://<server>:8210/api/PowerAssist
+https://[server]:8210/api/PowerAssist
 
 
 Either create a new certificate for Power Assist or trust it on the Grafana/Prometheus server or by pass SSL.
@@ -32,7 +32,7 @@ Create a VENV for python3
 
 Make sure the script ran
 
-http://<prometheus_server>:8000
+http://[prometheus_server]:8000
 
 
 Make the script a service:
@@ -57,12 +57,12 @@ Create the Prometheus scrape:
     metrics_path: '/metrics'  # Specify the metrics endpoint path
     static_configs:
       - targets:
-          - '<prometheus_server>:8000'  # Corrected: removed /metrics from target
+          - '[prometheus_server]:8000'  # Corrected: removed /metrics from target
 
 
 Verify that Prometheus is scraping correctly:
 
-  http://<prometheus_server>:9090/targets
+  http://[prometheus_server]:9090/targets
 
 
   <img width="1892" height="182" alt="image" src="https://github.com/user-attachments/assets/44e9f67e-a357-46c5-b3a2-979a49419d19" />
