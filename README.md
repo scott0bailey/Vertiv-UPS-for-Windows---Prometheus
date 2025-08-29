@@ -1,7 +1,9 @@
 On the Windows server install the Vertiv Power Assist:
+
 https://www.vertiv.com/en-us/support/software-download/software/vertiv-power-assist-software-download/
 
 Once installed verify the metrics are displayed:
+
 https://<server>:8210/api/PowerAssist
 
 Either create a new certificate for Power Assist or trust it on the Grafana/Prometheus server or by pass SSL.
