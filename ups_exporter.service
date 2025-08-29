@@ -1,0 +1,16 @@
+[Unit]
+Description=UPS Exporter Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/monitoring
+Environment=PATH=/home/pi/monitoring/vertiv/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/pi/monitoring/vertiv/bin/python3 /home/pi/monitoring/ups_exporter.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
