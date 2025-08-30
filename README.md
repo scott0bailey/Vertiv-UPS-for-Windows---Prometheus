@@ -1,3 +1,6 @@
+windows power assist 8210 > ups_exporter parses for prometheus 8000 > promethues.yml scrapes 8000
+
+
 On the Windows server install the Vertiv Power Assist:
 
 https://www.vertiv.com/en-us/support/software-download/software/vertiv-power-assist-software-download/
