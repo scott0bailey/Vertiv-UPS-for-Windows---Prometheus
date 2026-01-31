@@ -1,0 +1,70 @@
+Let's align everything with your existing /opt/docker/monitoring/ structure. Since your main docker-compose.yml is in the base directory, we will treat the UPS exporter as a sub-component.
+
+1. The Correct Directory Structure
+Ensure your files are placed exactly like this:
+
+Plaintext
+
+/opt/docker/monitoring/
+├── docker-compose.yml       # Your main compose file
+├── prometheus/
+│   └── prometheus.yml       # Your existing config
+└── ups_exporter/            # Create this new directory
+    ├── Dockerfile
+    ├── requirements.txt
+    └── ups_exporter.py
+
+2. Set up the Exporter Files
+First, move into the new subdirectory: cd /opt/docker/monitoring/ups_exporter/
+
+File: requirements.txt
+
+Plaintext
+
+prometheus_client
+requests
+urllib3
+File: Dockerfile
+
+Dockerfile
+
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY ups_exporter.py .
+CMD ["python", "-u", "ups_exporter.py"]
+
+3. Update the Main Docker Compose
+Now, go back to /opt/docker/monitoring/docker-compose.yml and add the ups_exporter service.
+
+Note: We point the build context to the ups_exporter folder. Notice there is no ports section for the exporter, keeping port 8000 hidden.
+
+YAML
+
+services:
+  # Your existing prometheus service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    restart: always
+
+  # Add the UPS Exporter service
+  ups_exporter:
+    build: ./ups_exporter
+    container_name: ups_exporter
+    restart: always
+
+4. Update Prometheus Configuration
+Edit /opt/docker/monitoring/prometheus/prometheus.yml. Since they are in the same compose file, Prometheus uses the service name as the address.
+
+YAML
+
+scrape_configs:
+  - job_name: 'ups_exporter'
+    static_configs:
+      - targets: ['ups_exporter:8000']
